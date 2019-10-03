@@ -1,17 +1,15 @@
 import * as React from "react";
-import * as _ from "lodash";
-
-import { BaseWidget, BaseWidgetProps } from "../BaseWidget";
-
 import { DiagramEngine } from "../../DiagramEngine";
-import { NodeModel } from "../../models/NodeModel";
+import * as _ from "lodash";
 import { NodeWidget } from "../NodeWidget";
+import { NodeModel } from "../../models/NodeModel";
+import { BaseWidget, BaseWidgetProps } from "../BaseWidget";
 
 export interface NodeLayerProps extends BaseWidgetProps {
 	diagramEngine: DiagramEngine;
 }
 
-export interface NodeLayerState { }
+export interface NodeLayerState {}
 
 export class NodeLayerWidget extends BaseWidget<NodeLayerProps, NodeLayerState> {
 	constructor(props: NodeLayerProps) {
@@ -31,23 +29,6 @@ export class NodeLayerWidget extends BaseWidget<NodeLayerProps, NodeLayerState> 
 	componentDidUpdate() {
 		this.updateNodeDimensions();
 		this.props.diagramEngine.nodesRendered = true;
-
-		const model = this.props.diagramEngine.getDiagramModel();
-
-		model.iterateListeners((listener, event) => {
-			if (listener.zoomUpdated) {
-				listener.zoomUpdated({
-					...event,
-					zoom: model.zoom
-				});
-			} else if (listener.offsetUpdated) {
-				listener.offsetUpdated({
-					...event,
-					offsetX: model.offsetX,
-					offsetY: model.offsetY
-				});
-			}
-		});
 	}
 
 	render() {
