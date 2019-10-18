@@ -10,6 +10,10 @@ export interface BaseWidgetProps {
 	 * append additional classes
 	 */
 	className?: string;
+	/**
+	 * append additional styles
+	 */
+	style?: object;
 
 	/**
 	 * Additional props to add
@@ -38,7 +42,8 @@ export class BaseWidget<P extends BaseWidgetProps = BaseWidgetProps, S = any> ex
 	getProps(): any {
 		return {
 			...((this.props.extraProps as any) || {}),
-			className: this.getClassName()
+			className: this.getClassName(),
+			style: this.props.style
 		};
 	}
 }
