@@ -568,7 +568,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 						} else {
 							diagramModel.clearSelection();
 						}
-					} else {
+					} else if(model.model) {
 						//its some or other element, probably want to move it
 						if (!event.shiftKey && !model.model.isSelected()) {
 							diagramModel.clearSelection();
