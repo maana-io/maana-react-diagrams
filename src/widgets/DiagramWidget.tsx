@@ -281,16 +281,14 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 
 			_.forEach(this.state.action.selectionModels, model => {
 				// in this case we need to also work out the relative grid position
-				if (
-					model.model instanceof NodeModel
-				) {
+				if (model.model instanceof NodeModel) {
 					model.model.x = diagramModel.getGridPosition(model.initialX + amountX / amountZoom);
 					model.model.y = diagramModel.getGridPosition(model.initialY + amountY / amountZoom);
 					const diffX =  model.model.x - model.initialX;
 					const diffY =  model.model.y - model.initialY;
 
 					// update port coordinates as well
-					if (model.model instanceof NodeModel && (diffX !== 0 || diffY !== 0)) {
+					if (diffX !== 0 || diffY !== 0) {
 						_.forEach(model.model.getPorts(), port => {
 							
 							const initialPortCoords = model.initialPortCoords[port.id];
