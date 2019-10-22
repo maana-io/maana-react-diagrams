@@ -318,28 +318,6 @@ export class DiagramEngine extends BaseEntity<DiagramEngineListener> {
 	}
 
 	/**
-	 * More efficient calculation of rectangular coordinates of the port passed in when deltas and zoom are known.
-	 */
-	calculatePortCoords(
-		port: PortModel,
-		deltaX: number,
-		deltaY: number,
-		amountZoom: number
-	): {
-		x: number;
-		y: number;
-		width: number;
-		height: number;
-	} {
-		return {
-			x: (port.x + deltaX) / amountZoom,
-			y: (port.y + deltaY) / amountZoom,
-			width: port.width,
-			height: port.height
-		};
-	}
-
-	/**
 	 * Calculate rectangular coordinates of the port passed in.
 	 */
 	getPortCoords(

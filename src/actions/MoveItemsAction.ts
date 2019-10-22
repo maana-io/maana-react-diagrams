@@ -1,8 +1,10 @@
+import * as _ from "lodash";
+
 import { BaseAction } from "./BaseAction";
-import { SelectionModel } from "../models/SelectionModel";
-import { PointModel } from "../models/PointModel";
-import { NodeModel } from "../models/NodeModel";
 import { DiagramEngine } from "../DiagramEngine";
+import { NodeModel } from "../models/NodeModel";
+import { PointModel } from "../models/PointModel";
+import { SelectionModel } from "../models/SelectionModel";
 
 export class MoveItemsAction extends BaseAction {
 	selectionModels: SelectionModel[];
@@ -20,10 +22,18 @@ export class MoveItemsAction extends BaseAction {
 		});
 
 		this.selectionModels = selectedItems.map((item: PointModel | NodeModel) => {
+			const initialPortCoords = {};
+			if (item instanceof NodeModel) {
+				_.forEach(item.getPorts(), port => {
+					initialPortCoords[port.id] = {initialX: port.x, initialY: port.y};
+				})
+			}
+			
 			return {
 				model: item,
 				initialX: item.x,
-				initialY: item.y
+				initialY: item.y,
+				initialPortCoords 
 			};
 		});
 	}
