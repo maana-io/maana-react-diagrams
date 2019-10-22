@@ -494,7 +494,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 		);
 
 		diagramEngine.enableRepaintEntities([]);
-		this.forceUpdate();
+    this.forceUpdate(() => diagramEngine.clearRepaintEntities());
 	}
 
 	drawSelectionBox() {
@@ -568,7 +568,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 						} else {
 							diagramModel.clearSelection();
 						}
-					} else if(model.model) {
+					} else if (model.model) {
 						//its some or other element, probably want to move it
 						if (!event.shiftKey && !model.model.isSelected()) {
 							diagramModel.clearSelection();
