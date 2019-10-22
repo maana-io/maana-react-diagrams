@@ -494,7 +494,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 		);
 
 		diagramEngine.enableRepaintEntities([]);
-    this.forceUpdate(() => diagramEngine.clearRepaintEntities());
+		this.forceUpdate(() => diagramEngine.clearRepaintEntities());
 	}
 
 	drawSelectionBox() {
