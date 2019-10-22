@@ -144,7 +144,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 
 		if (this.componentRef.current) {
 			this.componentRef.current.addEventListener('wheel', this.onMouseWheel);
-		
+
 			this.props.diagramEngine.setCanvas(this.componentRef.current);
 		}
 
@@ -468,7 +468,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 
 			const {diagramEngine} = this.props
 			const diagramModel = diagramEngine.getDiagramModel()
-			
+
 			// Requesting an animation frame allows the browser to repaint between frames
 			// resulting in a much smoother zooming experience.
 			if (this.lastZoomAnimationFrame) cancelAnimationFrame(this.lastZoomAnimationFrame);
@@ -515,7 +515,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 		);
 
 		diagramEngine.enableRepaintEntities([]);
-		this.forceUpdate();
+		this.forceUpdate(() => diagramEngine.clearRepaintEntities());
 	}
 
 	drawSelectionBox() {
@@ -589,7 +589,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 						} else {
 							diagramModel.clearSelection();
 						}
-					} else if(model.model) {
+					} else if (model.model) {
 						//its some or other element, probably want to move it
 						if (!event.shiftKey && !model.model.isSelected()) {
 							diagramModel.clearSelection();
