@@ -271,36 +271,55 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 			let amountY = clientY - this.state.action.mouseY;
 			let amountZoom = diagramModel.getZoomLevel() / 100;
 
+			const pointModels = {};
+			
+			_.forEach(this.state.action.selectionModels, model => {
+				if (model.model instanceof PointModel) {
+					pointModels[model.model.id] = model;
+				}
+			});
+
 			_.forEach(this.state.action.selectionModels, model => {
 				// in this case we need to also work out the relative grid position
-				if (
-					model.model instanceof NodeModel ||
-					(model.model instanceof PointModel && !model.model.isConnectedToPort())
-				) {
+				if (model.model instanceof NodeModel) {
 					model.model.x = diagramModel.getGridPosition(model.initialX + amountX / amountZoom);
 					model.model.y = diagramModel.getGridPosition(model.initialY + amountY / amountZoom);
+					const diffX =  model.model.x - model.initialX;
+					const diffY =  model.model.y - model.initialY;
 
 					// update port coordinates as well
-					if (model.model instanceof NodeModel) {
+					if (diffX !== 0 || diffY !== 0) {
 						_.forEach(model.model.getPorts(), port => {
-							const portCoords = this.props.diagramEngine.calculatePortCoords(
-								port,
-								amountX,
-								amountY,
-								amountZoom
-							);
-							port.updateCoords(portCoords);
+							
+							const initialPortCoords = model.initialPortCoords[port.id];
+
+							// Update the port coordinates within the node
+							port.updateCoords({
+								x: initialPortCoords.initialX + diffX,
+								y: initialPortCoords.initialY + diffY,
+								width: port.width,
+								height: port.height
+							});
+							
+							// For each link in the node, update the point positions so that the
+							// point (and corresponding link) will move with the node
+							_.forEach(port.getLinks(), link => {
+								const point = link.getPointForPort(port);
+								const pointSelectionModel = pointModels[point.id];
+								point.x = pointSelectionModel.initialX + diffX;
+								point.y = pointSelectionModel.initialY + diffY;
+							})
 						});
 					}
 
 					if (diagramEngine.isSmartRoutingEnabled()) {
 						diagramEngine.calculateRoutingMatrix();
 					}
-				} else if (model.model instanceof PointModel) {
-					// we want points that are connected to ports, to not necessarily snap to grid
+				} else if (model.model instanceof PointModel && !model.model.isConnectedToPort()) {
+					// we want points that are not connected to ports to not snap to grid
 					// this stuff needs to be pixel perfect, dont touch it
-					model.model.x = model.initialX + diagramModel.getGridPosition(amountX / amountZoom);
-					model.model.y = model.initialY + diagramModel.getGridPosition(amountY / amountZoom);
+					model.model.x = model.initialX + amountX / amountZoom;
+					model.model.y = model.initialY + amountY / amountZoom;
 				}
 			});
 
