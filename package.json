@@ -1,6 +1,6 @@
 {
 	"name": "maana-react-diagrams",
-	"version": "5.2.14",
+	"version": "5.2.15",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/maana-io/react-diagrams.git"
@@ -20,7 +20,7 @@
 	"typings": "./dist/@types/src/main",
 	"author": "dylanvorster",
 	"publishConfig": {
-		"registry": "https://npm.corp.maana.io/artifactory/api/npm/npm-local"
+		"registry": "https://npm.pkg.github.com/"
 	},
 	"scripts": {
 		"build": "tsc",
