@@ -272,7 +272,7 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 			let amountZoom = diagramModel.getZoomLevel() / 100;
 
 			const pointModels = {};
-			
+
 			_.forEach(this.state.action.selectionModels, model => {
 				if (model.model instanceof PointModel) {
 					pointModels[model.model.id] = model;
@@ -293,24 +293,28 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 						const diffY =  model.model.y - model.initialY;
 
 						_.forEach(model.model.getPorts(), port => {
-							
+
 							const initialPortCoords = model.initialPortCoords[port.id];
 
 							// Update the port coordinates within the node
-							port.updateCoords({
-								x: initialPortCoords.initialX + diffX,
-								y: initialPortCoords.initialY + diffY,
-								width: port.width,
-								height: port.height
-							});
-							
+							if (initialPortCoords) {
+								port.updateCoords({
+									x: initialPortCoords.initialX + diffX,
+									y: initialPortCoords.initialY + diffY,
+									width: port.width,
+									height: port.height
+								});
+							}
+
 							// For each link in the node, update the point positions so that the
 							// point (and corresponding link) will move with the node
 							_.forEach(port.getLinks(), link => {
 								const point = link.getPointForPort(port);
 								const pointSelectionModel = pointModels[point.id];
-								point.x = pointSelectionModel.initialX + diffX;
-								point.y = pointSelectionModel.initialY + diffY;
+								if (pointSelectionModel) {
+									point.x = pointSelectionModel.initialX + diffX;
+									point.y = pointSelectionModel.initialY + diffY;
+								}
 							})
 						});
 					}
