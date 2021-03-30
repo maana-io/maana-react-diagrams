@@ -310,10 +310,12 @@ export class DiagramWidget extends BaseWidget<DiagramProps, DiagramState> {
 							// point (and corresponding link) will move with the node
 							_.forEach(port.getLinks(), link => {
 								const point = link.getPointForPort(port);
-								const pointSelectionModel = pointModels[point.id];
-								if (pointSelectionModel) {
-									point.x = pointSelectionModel.initialX + diffX;
-									point.y = pointSelectionModel.initialY + diffY;
+								if (point) {
+									const pointSelectionModel = pointModels[point.id];
+									if (pointSelectionModel) {
+										point.x = pointSelectionModel.initialX + diffX;
+										point.y = pointSelectionModel.initialY + diffY;
+									}
 								}
 							})
 						});
