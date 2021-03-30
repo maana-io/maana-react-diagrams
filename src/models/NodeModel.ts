@@ -1,8 +1,10 @@
-import { BaseModel, BaseModelListener } from "./BaseModel";
-import { PortModel } from "./PortModel";
 import * as _ from "lodash";
+
+import { BaseModel, BaseModelListener } from "./BaseModel";
+
 import { DiagramEngine } from "../DiagramEngine";
 import { DiagramModel } from "./DiagramModel";
+import { PortModel } from "./PortModel";
 
 export class NodeModel extends BaseModel<DiagramModel, BaseModelListener> {
 	x: number;
@@ -50,7 +52,7 @@ export class NodeModel extends BaseModel<DiagramModel, BaseModelListener> {
 				);
 			});
 		}
-		return entities;
+		return entities.filter(Boolean);
 	}
 
 	deSerialize(ob, engine: DiagramEngine) {
